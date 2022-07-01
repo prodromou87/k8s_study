@@ -108,7 +108,7 @@
 
   - name: Install calico pod network
     become: false
-    command: kubectl create ./calico.yaml
+    command: kubectl create -f ./calico.yaml
 
   - name: Generate join command
     command: kubeadm token create --print-join-command
