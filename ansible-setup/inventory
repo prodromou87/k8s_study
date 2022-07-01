@@ -1,0 +1,9 @@
+[k8s_masters]
+master-01
+
+[k8s_nodes]
+node-01
+node-02
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
