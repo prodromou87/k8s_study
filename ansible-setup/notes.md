@@ -1,0 +1,1 @@
+ - /etc/containerd/config.toml disables the CRI plugin by default. Comment that line out and restart the containerd service before restarting kubelet service and running kubeadm init
