@@ -1,5 +1,5 @@
 ---
-- hosts: k8s_masters
+- hosts: k8s_nodes
   become: true
   tasks:
   - name: Install packages that allow apt to be used over HTTPS
