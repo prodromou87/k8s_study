@@ -1,2 +1,3 @@
  - /etc/containerd/config.toml disables the CRI plugin by default. Comment that line out and restart the containerd service before restarting kubelet service and running kubeadm init
  - run sudo kubeadm rest -f before after every failed kubeadm init attempt
+ - make sure that VMs have static IPs and can see each other. For Hyper-V, it needs a new internal switch assigned to static IPs. This static IP needs to be advertised in the kubeadm init command

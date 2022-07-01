@@ -102,8 +102,8 @@
       state: restarted
 
   - name: Initialize the Kubernetes cluster using kubeadm
-    # command: kubeadm init --apiserver-advertise-address="192.168.59.210" --apiserver-cert-extra-sans="master-01" --node-name master-01 --pod-network-cidr=10.142.0.0/24
-    command: kubeadm init --node-name master-01 --pod-network-cidr=10.142.0.0/24
+    command: kubeadm init --apiserver-advertise-address="10.10.10.101" --apiserver-cert-extra-sans="10.10.10.101" --node-name master-01 --pod-network-cidr=10.142.0.0/24
+    # command: kubeadm init --pod-network-cidr=10.142.0.0/24
 
   - name: Setup kubeconfig for aprodromou user
     command: "{{ item }}"
@@ -112,20 +112,20 @@
       - cp /etc/kubernetes/admin.conf /home/aprodromou/.kube/config
       - chown aprodromou:aprodromou /home/aprodromou/.kube/config
 
-  - name: Install calico operator on cluster
-    become: false
-    command: kubectl create -f https://projectcalico.docs.tigera.io/manifests/tigera-operator.yaml
+  # - name: Install calico operator on cluster
+  #   become: false
+  #   command: kubectl create -f https://projectcalico.docs.tigera.io/manifests/tigera-operator.yaml
 
-  - name: Install calico custom resources
-    become: false
-    command: kubectl create -f custom-resources.yml
+  # - name: Install calico custom resources
+  #   become: false
+  #   command: kubectl create -f ./custom-resources.yaml
 
-  - name: Generate join command
-    command: kubeadm token create --print-join-command
-    register: join_command
+  # - name: Generate join command
+  #   command: kubeadm token create --print-join-command
+  #   register: join_command
 
-  - name: Copy join command to local file
-    local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
+  # - name: Copy join command to local file
+  #   local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
 
   handlers:
     - name: docker status
