@@ -32,3 +32,20 @@
       - kubelet 
       - kubeadm 
       - kubectl
+
+    - name: Delete /etc/containerd/config.toml
+    file:
+      state: absent
+      path: /etc/containerd/config.toml
+
+  - name: Restart containerd
+    service:
+      name: containerd
+      daemon_reload: yes
+      state: restarted
+
+  - name: Restart kubelet
+    service:
+      name: kubelet
+      daemon_reload: yes
+      state: restarted
