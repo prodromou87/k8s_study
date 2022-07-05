@@ -1,0 +1,19 @@
+# Sets cgroupdriver to systemd
+# I think this is the default behavior anyway
+# but the instructions say you should do it
+
+# File will be passed with the --config flag during 
+# kubeadm init --config kubeadm-config.yaml
+
+# Kubeadm will set this behavior on all nodes when they join
+
+kind: ClusterConfiguration
+apiVersion: kubeadm.k8s.io/v1beta3
+kubernetesVersion: v1.24.2
+controlPlaneEndpoint: “k8sapi.master.net”
+networking:
+  podSubnet: “10.142.0.0/24”
+---
+kind: KubeletConfiguration
+apiVersion: kubelet.config.k8s.io/v1beta1
+cgroupDriver: systemd
