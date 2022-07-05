@@ -1,0 +1,31 @@
+---
+- hosts: k8s_masters
+  become: true
+  tasks:
+  - name: Copy config file
+    copy: src=./kubeadm-config.yaml dest=/tmp/kubeadm-config.yaml mode=0777
+
+  - name: Initialize the Kubernetes cluster using kubeadm
+    command: kubeadm init --config /tmp/kubeadm-config.yaml
+
+  - name: Setup kubeconfig for aprodromou user
+    command: "{{ item }}"
+    with_items:
+      - mkdir -p /home/aprodromou/.kube
+      - cp /etc/kubernetes/admin.conf /home/aprodromou/.kube/config
+      - chown aprodromou:aprodromou /home/aprodromou/.kube/config
+
+  - name: Install calico operator on cluster
+    become: false
+    command: kubectl create -f https://projectcalico.docs.tigera.io/manifests/tigera-operator.yaml
+
+  - name: Install calico custom resources
+    become: false
+    command: kubectl create -f ./custom-resources.yaml
+
+  - name: Generate join command
+    command: kubeadm token create --print-join-command
+    register: join_command
+
+  - name: Copy join command to local file
+    local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
