@@ -3,10 +3,10 @@
   become: true
   tasks:
   - name: Add line in /etc/hosts with load balancer
-  lineinfile:
-    path: /etc/hosts
-    line: 192.168.10.160 k8sapi.master.net
-    create: yes
+    lineinfile:
+      path: /etc/hosts
+      line: 192.168.10.160 k8sapi.master.net
+      create: yes
 
   - name: Add an apt signing key for Kubernetes
     apt_key:
