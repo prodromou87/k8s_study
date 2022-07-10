@@ -6,7 +6,11 @@
 # kubeadm init --config kubeadm-config.yaml
 
 # Kubeadm will set this behavior on all nodes when they join
-
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: InitConfiguration
+nodeRegistration:
+  criSocket: "/var/run/crio/crio.sock"
+---
 kind: ClusterConfiguration
 apiVersion: kubeadm.k8s.io/v1beta3
 kubernetesVersion: v1.24.2
