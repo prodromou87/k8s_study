@@ -19,7 +19,7 @@
     become: false
     command: kubectl create -f https://projectcalico.docs.tigera.io/manifests/tigera-operator.yaml
 
-  - name: Copy config file
+  - name: Copy custom-resources file for calico CNI
     copy: src=./custom-resources.yaml dest=/tmp/custom-resources.yaml mode=0777
 
   - name: Install calico custom resources
@@ -27,6 +27,7 @@
     command: kubectl create -f /tmp/custom-resources.yaml
   
   - name: Taint master nodes
+    become: false
     command: "kubectl taint nodes --all node-role.kubernetes.io/master-"
 
   - name: Generate join command
