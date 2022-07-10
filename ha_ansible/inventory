@@ -1,8 +1,17 @@
 [k8s_masters]
-master-01
+m01
+m02
+m03
 
 [k8s_nodes]
-node-01
+n01
+
+[main_master]
+m01
+
+[join_masters]
+m02
+m03
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3

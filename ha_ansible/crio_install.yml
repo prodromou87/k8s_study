@@ -1,0 +1,48 @@
+---
+- hosts: all
+  vars:
+    - os: xUbuntu_22.04
+    - version: 1.24.1
+  become: true
+  tasks:
+
+  - name: Add an apt signing key for libcontainers
+    apt_key:
+      url: "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ os }}/Release.key"
+      state: present
+      keyring: /etc/apt/trusted.gpg.d/libcontainers-archive-keyring.gpg
+
+  - name: Add an apt signing key for cri-o
+    apt_key:
+      url: "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ version }}/{{ os }}/Release.key"
+      state: present
+      keyring: /etc/apt/trusted.gpg.d/libcontainers-crio-archive-keyring.gpg
+
+  - name: Add apt repository for libcontainers
+    apt_repository:
+      repo: "deb [signed-by=/usr/share/keyrings/libcontainers-archive-keyring.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ os }}/ /"
+      state: present
+      filename: devel:kubic:libcontainers:stable
+
+  - name: Add apt repository for cri-o
+    apt_repository:
+      repo: "deb [signed-by=/usr/share/keyrings/libcontainers-crio-archive-keyring.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ version }}/{{ os }}/ /"
+      state: present
+      filename: "devel:kubic:libcontainers:stable:cri-o:{{ version }}"
+
+  - name: Install cri-o packages and CNI plugins
+    apt:
+      name: "{{ packages }}"
+      state: present
+      update_cache: yes
+    vars:
+      packages:
+      - cri-o
+      - cri-o-runc
+      - containernetworking-plugins
+      
+  - name: Restart crio
+    service:
+      name: crio
+      daemon_reload: yes
+      state: restarted
