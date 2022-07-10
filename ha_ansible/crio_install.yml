@@ -10,13 +10,13 @@
     apt_key:
       url: "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ os }}/Release.key"
       state: present
-      keyring: /etc/apt/trusted.gpg.d/libcontainers-archive-keyring.gpg
+      keyring: /usr/share/keyrings/libcontainers-archive-keyring.gpg
 
   - name: Add an apt signing key for cri-o
     apt_key:
       url: "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ version }}/{{ os }}/Release.key"
       state: present
-      keyring: /etc/apt/trusted.gpg.d/libcontainers-crio-archive-keyring.gpg
+      keyring: /usr/share/keyrings/libcontainers-crio-archive-keyring.gpg
 
   - name: Add apt repository for libcontainers
     apt_repository:
